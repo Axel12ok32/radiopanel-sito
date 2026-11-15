@@ -1,0 +1,392 @@
+---
+// Sito vetrina di RadioPanel: presentazione, funzioni, compatibilità, licenza e contatti.
+// Stile: gli stessi token del pannello (_css/style.css), vedi src/styles/sito.css.
+import '../styles/sito.css';
+
+const PANEL_URL = 'https://client.radiopanel.app';
+const DOCS_URL = 'https://docs.radiopanel.app';
+const OWNER = 'A.S.V. Studios APPS';
+const INFO_MAIL = 'info@asvstudios.it';
+const SUPPORT_MAIL = 'support@asvhosting.com';
+
+const licenseMail =
+	`mailto:${INFO_MAIL}?subject=${encodeURIComponent('Richiesta attivazione licenza RadioPanel')}&body=${encodeURIComponent(
+		'Buongiorno,\n\nvorrei richiedere l\'attivazione di una licenza RadioPanel.\n\n' +
+			'Nome della radio:\nSito web della radio:\nNumero di radio da gestire:\nNumero indicativo di utenti (staff e collaboratori):\n' +
+			'Software usati (AzuraCast, MB Studio, altro):\nFunzioni o personalizzazioni richieste:\n\nReferente e recapito:\n',
+	)}`;
+const infoMail = `mailto:${INFO_MAIL}?subject=${encodeURIComponent('Informazioni su RadioPanel')}`;
+const supportMail = `mailto:${SUPPORT_MAIL}?subject=${encodeURIComponent('Supporto RadioPanel')}`;
+
+const features = [
+	{ icon: 'calendar-week', area: 'Palinsesto e dirette', text: 'Palinsesto settimanale con variazioni e sostituzioni, scaletta della diretta, turni dello staff e notifiche a chi va in onda.' },
+	{ icon: 'broadcast', area: 'In onda e ascolti', text: 'Brano in onda, stato dello streaming, chi è in diretta, ultimi brani trasmessi, ascoltatori e riascolto delle dirette.' },
+	{ icon: 'people', area: 'Staff e collaboratori', text: 'Utenti, ruoli e permessi, account di gruppo, presenze, giustifiche, report delle ore e ricompense.' },
+	{ icon: 'collection', area: 'Contenuti della radio', text: 'Programmi, news, spot, scadenze e regolamento interno, in un unico posto per tutta la redazione.' },
+	{ icon: 'music-note-list', area: 'Richieste musicali', text: 'Moduli per le richieste degli ascoltatori, con l\'orario di messa in onda segnato da solo.' },
+	{ icon: 'pen', area: 'Documenti e firme', text: 'Documenti da firmare e da prendere in visione, moduli e candidature con raccolta delle risposte.' },
+	{ icon: 'display', area: 'Pagine pubbliche e studio', text: 'Palinsesto pubblico, Visual Radio, orologio dello studio con la spia ON AIR e postazione di regia.' },
+	{ icon: 'globe2', area: 'Sito della radio', text: 'API per costruire il sito con i dati del pannello e analitiche del sito, con consenso dei visitatori.' },
+	{ icon: 'chat-dots', area: 'Comunicazioni', text: 'Notifiche nel pannello e sul browser, email, WhatsApp e SMS verso lo staff.' },
+	{ icon: 'shield-lock', area: 'Sicurezza', text: 'Accesso con passkey, verifica in due passaggi, registro delle attività e permessi per ogni pagina.' },
+	{ icon: 'diagram-3', area: 'Più radio, un pannello', text: 'Più emittenti nello stesso pannello, ognuna con le sue pagine, il suo staff e i suoi collegamenti.' },
+	{ icon: 'window-desktop', area: 'App e dispositivi', text: 'App desktop per Windows e macOS e pannello installabile dal browser su computer, tablet e smartphone.' },
+	{ icon: 'tools', area: 'Utility', text: 'Knowledge base interna, drive condiviso e programmi da scaricare per lo staff.' },
+	{ icon: 'life-preserver', area: 'Assistenza', text: 'Ticket di assistenza direttamente dal pannello, documentazione completa e supporto dedicato.' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="it">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>RadioPanel · Il pannello di gestione per le radio</title>
+		<meta name="description" content={`RadioPanel è il pannello di gestione per le radio di ${OWNER}: palinsesto, staff, dirette, contenuti e sito della radio in un unico posto. Compatibile con AzuraCast e MB Studio.`} />
+		<meta name="theme-color" content="#0a1922" />
+		<link rel="canonical" href={Astro.site ? new URL('/', Astro.site).href : '/'} />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="RadioPanel · Il pannello di gestione per le radio" />
+		<meta property="og:description" content="Palinsesto, staff, dirette, contenuti e sito della radio in un unico pannello. Compatibile con AzuraCast e MB Studio." />
+		<meta property="og:image" content={Astro.site ? new URL('/logo.png', Astro.site).href : '/logo.png'} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400..800;1,400..600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+	</head>
+	<body>
+		<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+		<header class="topbar">
+			<div class="wrap topbar-inner">
+				<a class="brand" href="/" aria-label="RadioPanel, inizio pagina">
+					<img src="/logo.png" alt="" width="32" height="32" />
+					<span>RadioPanel</span>
+				</a>
+				<nav class="topnav" aria-label="Sezioni">
+					<a href="#funzioni">Funzioni</a>
+					<a href="#compatibilita">Compatibilità</a>
+					<a href="#su-misura">Su misura</a>
+					<a href="#licenza">Licenza</a>
+					<a href="#contatti">Contatti</a>
+				</nav>
+				<div class="topbar-actions">
+					<a class="btn btn-ghost" href={DOCS_URL} aria-label="Documentazione">
+						<i class="bi bi-journal-text" aria-hidden="true"></i><span class="hide-sm">Documentazione</span>
+					</a>
+					<a class="btn btn-primary" href={PANEL_URL}>
+						<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>Accedi
+					</a>
+				</div>
+			</div>
+		</header>
+
+		<main id="contenuto">
+			<!-- Apertura -->
+			<section class="hero">
+				<div class="wrap hero-grid">
+					<div class="hero-text">
+						<p class="eyebrow">Software di gestione per le radio</p>
+						<h1>La regia della tua radio, in un unico pannello.</h1>
+						<div class="tuning" aria-hidden="true"></div>
+						<p class="lead">
+							Palinsesto, dirette, staff, contenuti e sito della radio: RadioPanel mette tutto in un solo posto, per chi va in onda e
+							per chi dirige la radio.
+						</p>
+						<div class="actions">
+							<a class="btn btn-primary btn-lg" href="#licenza">
+								Richiedi una licenza<i class="bi bi-arrow-right" aria-hidden="true"></i>
+							</a>
+							<a class="btn btn-lg" href={PANEL_URL}>
+								<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>Accedi al pannello
+							</a>
+						</div>
+						<p class="hero-note">
+							<i class="bi bi-patch-check" aria-hidden="true"></i>
+							Un software di <strong>{OWNER}</strong> · compatibile con <strong>AzuraCast</strong> e <strong>MB Studio</strong>
+						</p>
+					</div>
+
+					<!-- Anteprima disegnata del pannello (dati di esempio) -->
+					<div class="preview" aria-hidden="true">
+						<div class="preview-bar">
+							<span class="dot"></span><span class="dot"></span><span class="dot"></span>
+							<span class="preview-url">client.radiopanel.app</span>
+						</div>
+						<div class="preview-body">
+							<div class="onair">
+								<span class="onair-led"></span>
+								<div>
+									<p class="mono-label">In diretta</p>
+									<p class="onair-show">Buongiorno Radio</p>
+									<p class="onair-song"><i class="bi bi-music-note-beamed"></i> Radio Esempio · brano in onda</p>
+								</div>
+								<span class="pill pill-live">ON AIR</span>
+							</div>
+							<div class="progress"><span></span></div>
+							<p class="mono-label">Palinsesto di oggi</p>
+							<ul class="schedule">
+								<li><span class="time">07:00</span><span>Buongiorno Radio</span><span class="pill pill-now">ora</span></li>
+								<li><span class="time">10:00</span><span>Mattina in musica</span></li>
+								<li><span class="time">13:00</span><span>News e approfondimenti</span></li>
+								<li><span class="time">15:00</span><span>Pomeriggio insieme</span></li>
+							</ul>
+							<div class="stats">
+								<div><p class="mono-label">Ascoltatori</p><p class="stat">128</p></div>
+								<div><p class="mono-label">Staff in turno</p><p class="stat">6</p></div>
+								<div><p class="mono-label">Richieste</p><p class="stat">14</p></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Compatibilità in breve -->
+			<section class="strip" aria-label="Compatibilità">
+				<div class="wrap strip-inner">
+					<p class="mono-label">Perfettamente compatibile con</p>
+					<div class="strip-items">
+						<span><i class="bi bi-soundwave" aria-hidden="true"></i>AzuraCast</span>
+						<span><i class="bi bi-sliders2-vertical" aria-hidden="true"></i>MB Studio</span>
+						<span><i class="bi bi-windows" aria-hidden="true"></i>Windows</span>
+						<span><i class="bi bi-apple" aria-hidden="true"></i>macOS</span>
+						<span><i class="bi bi-phone" aria-hidden="true"></i>Smartphone e tablet</span>
+					</div>
+				</div>
+			</section>
+
+			<!-- Funzioni -->
+			<section class="section" id="funzioni">
+				<div class="wrap">
+					<header class="section-head">
+						<p class="eyebrow">Cosa offre</p>
+						<h2>Tutto quello che serve a una radio</h2>
+						<p>Ogni area del lavoro di una radio ha la sua sezione nel pannello. Ognuno vede solo quello che gli serve, in base al ruolo.</p>
+					</header>
+					<div class="table-wrap">
+						<table class="features">
+							<thead>
+								<tr>
+									<th scope="col">Area</th>
+									<th scope="col">Cosa offre</th>
+									<th scope="col" class="col-check">Incluso</th>
+								</tr>
+							</thead>
+							<tbody>
+								{
+									features.map((f) => (
+										<tr>
+											<th scope="row">
+												<span class="feat-icon"><i class={`bi bi-${f.icon}`} aria-hidden="true" /></span>
+												{f.area}
+											</th>
+											<td>{f.text}</td>
+											<td class="col-check">
+												<i class="bi bi-check-circle-fill" aria-hidden="true" />
+												<span class="sr-only">Incluso</span>
+											</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+					<p class="table-note">
+						Vuoi vedere nel dettaglio come funziona ogni pagina? <a href={DOCS_URL}>Leggi la documentazione <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+					</p>
+				</div>
+			</section>
+
+			<!-- Compatibilità nel dettaglio -->
+			<section class="section section-alt" id="compatibilita">
+				<div class="wrap">
+					<header class="section-head">
+						<p class="eyebrow">Integrazioni</p>
+						<h2>Lavora con gli strumenti che la radio usa già</h2>
+						<p>RadioPanel si collega allo streaming e alla regia della radio: niente doppio lavoro, i dati arrivano da soli.</p>
+					</header>
+					<div class="cards cards-2">
+						<article class="card">
+							<div class="card-head">
+								<span class="card-icon"><i class="bi bi-soundwave" aria-hidden="true"></i></span>
+								<div>
+									<h3>AzuraCast</h3>
+									<p class="mono-label">Streaming e AutoDJ</p>
+								</div>
+							</div>
+							<ul class="checks">
+								<li>Brano in onda, stato dello streaming e chi è in diretta</li>
+								<li>Ascoltatori e analitiche degli ascolti</li>
+								<li>Registrazioni delle dirette da riascoltare</li>
+								<li>Account DJ collegati al palinsesto: gli orari si aggiornano da soli</li>
+								<li>Diretta consentita solo negli orari del palinsesto</li>
+							</ul>
+						</article>
+						<article class="card">
+							<div class="card-head">
+								<span class="card-icon"><i class="bi bi-sliders2-vertical" aria-hidden="true"></i></span>
+								<div>
+									<h3>MB Studio</h3>
+									<p class="mono-label">Software di regia</p>
+								</div>
+							</div>
+							<ul class="checks">
+								<li>Brano in onda e ultimi brani presi direttamente dalla regia</li>
+								<li>Riascolto delle dirette</li>
+								<li>Orologio dello studio e Visual Radio con il brano in onda</li>
+								<li>Funziona insieme ad AzuraCast per stato della radio e ascoltatori</li>
+							</ul>
+						</article>
+					</div>
+				</div>
+			</section>
+
+			<!-- Su misura -->
+			<section class="section" id="su-misura">
+				<div class="wrap">
+					<header class="section-head">
+						<p class="eyebrow">Su misura</p>
+						<h2>Personalizzabile e modellabile sulle tue esigenze</h2>
+						<p>Ogni radio lavora a modo suo. RadioPanel si adatta alla tua organizzazione, non il contrario.</p>
+					</header>
+					<div class="cards cards-3">
+						<article class="card">
+							<span class="card-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
+							<h3>Pagine e sezioni</h3>
+							<p>Scegli quali pagine attivare per ogni radio, come ordinarle nel menu e chi le vede.</p>
+						</article>
+						<article class="card">
+							<span class="card-icon"><i class="bi bi-person-gear" aria-hidden="true"></i></span>
+							<h3>Ruoli e permessi</h3>
+							<p>Ruoli costruiti sulla struttura della radio: dai collaboratori allo Station Manager.</p>
+						</article>
+						<article class="card">
+							<span class="card-icon"><i class="bi bi-puzzle" aria-hidden="true"></i></span>
+							<h3>Funzioni dedicate</h3>
+							<p>Nuove funzioni, integrazioni e adattamenti sviluppati su richiesta per la tua radio.</p>
+						</article>
+					</div>
+				</div>
+			</section>
+
+			<!-- Licenza -->
+			<section class="section section-alt" id="licenza">
+				<div class="wrap">
+					<div class="license">
+						<div class="license-text">
+							<p class="eyebrow">Licenza</p>
+							<h2>Attiva RadioPanel per la tua radio</h2>
+							<div class="tuning" aria-hidden="true"></div>
+							<p>
+								RadioPanel è un software di <strong>{OWNER}</strong> e si usa con una licenza. La licenza si richiede e si attiva con una
+								richiesta di attivazione, e ha un <strong>costo personalizzato</strong> in base alla radio: numero di emittenti e di utenti,
+								funzioni e personalizzazioni.
+							</p>
+							<ol class="steps">
+								<li>
+									<span class="step-n">01</span>
+									<div><strong>Richiesta di attivazione</strong><p>Scrivici con i dati della radio e cosa ti serve.</p></div>
+								</li>
+								<li>
+									<span class="step-n">02</span>
+									<div><strong>Proposta su misura</strong><p>Ricevi una proposta con il costo personalizzato per la tua radio.</p></div>
+								</li>
+								<li>
+									<span class="step-n">03</span>
+									<div><strong>Attivazione</strong><p>Attiviamo la licenza e il tuo staff accede al pannello.</p></div>
+								</li>
+							</ol>
+						</div>
+						<aside class="license-card">
+							<p class="mono-label">Licenza RadioPanel</p>
+							<p class="price">Costo personalizzato</p>
+							<p class="price-sub">Calcolato sulle esigenze della tua radio</p>
+							<ul class="checks">
+								<li>Tutte le funzioni del pannello</li>
+								<li>Collegamento con AzuraCast e MB Studio</li>
+								<li>App desktop per Windows e macOS</li>
+								<li>Personalizzazioni su richiesta</li>
+								<li>Aggiornamenti e supporto dedicato</li>
+							</ul>
+							<a class="btn btn-primary btn-lg btn-block" href={licenseMail}>
+								<i class="bi bi-envelope" aria-hidden="true"></i>Richiedi l'attivazione
+							</a>
+							<p class="license-hint">Si apre un'email a {INFO_MAIL} già pronta da completare.</p>
+						</aside>
+					</div>
+				</div>
+			</section>
+
+			<!-- Contatti -->
+			<section class="section" id="contatti">
+				<div class="wrap">
+					<header class="section-head">
+						<p class="eyebrow">Contatti</p>
+						<h2>Parla con noi</h2>
+						<p>Titolare e licenziante del software è <strong>{OWNER}</strong>. Scrivici per informazioni o per assistenza.</p>
+					</header>
+					<div class="cards cards-3">
+						<a class="card card-link" href={infoMail}>
+							<span class="card-icon"><i class="bi bi-info-circle" aria-hidden="true"></i></span>
+							<h3>Informazioni e licenze</h3>
+							<p>Richieste di attivazione, preventivi e personalizzazioni.</p>
+							<span class="card-mail">{INFO_MAIL}</span>
+						</a>
+						<a class="card card-link" href={supportMail}>
+							<span class="card-icon"><i class="bi bi-life-preserver" aria-hidden="true"></i></span>
+							<h3>Supporto</h3>
+							<p>Assistenza tecnica per le radio che usano già RadioPanel.</p>
+							<span class="card-mail">{SUPPORT_MAIL}</span>
+						</a>
+						<a class="card card-link" href={DOCS_URL}>
+							<span class="card-icon"><i class="bi bi-journal-text" aria-hidden="true"></i></span>
+							<h3>Documentazione</h3>
+							<p>Come funziona ogni pagina del pannello, passo per passo.</p>
+							<span class="card-mail">docs.radiopanel.app</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- Chiusura -->
+			<section class="cta">
+				<div class="wrap cta-inner">
+					<div>
+						<h2>Usi già RadioPanel?</h2>
+						<p>Accedi al pannello della tua radio o consulta la documentazione.</p>
+					</div>
+					<div class="actions">
+						<a class="btn btn-primary btn-lg" href={PANEL_URL}>
+							<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>Accedi al pannello
+						</a>
+						<a class="btn btn-lg" href={DOCS_URL}>
+							<i class="bi bi-journal-text" aria-hidden="true"></i>Documentazione
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="footer">
+			<div class="wrap footer-inner">
+				<div class="footer-brand">
+					<img src="/logo.png" alt="" width="28" height="28" />
+					<p>
+						<strong>RadioPanel</strong> è un software di {OWNER}.<br />
+						© {year} {OWNER}. Tutti i diritti riservati.
+					</p>
+				</div>
+				<nav class="footer-links" aria-label="Collegamenti">
+					<a href={PANEL_URL}>Pannello</a>
+					<a href={DOCS_URL}>Documentazione</a>
+					<a href={`${PANEL_URL}/termini-condizioni`}>Termini e privacy</a>
+					<a href={infoMail}>{INFO_MAIL}</a>
+					<a href={supportMail}>{SUPPORT_MAIL}</a>
+				</nav>
+			</div>
+		</footer>
+	</body>
+</html>
