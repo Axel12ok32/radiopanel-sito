@@ -6,6 +6,10 @@ import '../styles/sito.css';
 const PANEL_URL = 'https://client.radiopanel.app';
 const DOCS_URL = 'https://docs.radiopanel.app';
 const OWNER = 'A.S.V. Studios APPS';
+// App desktop: Windows dal Microsoft Store, macOS con l'immagine disco caricata insieme agli aggiornamenti dell'app
+// (radiopanelapp: package.json → build.dmg.artifactName "RadioPanel.dmg", nome fisso a ogni versione)
+const WINDOWS_URL = 'https://apps.microsoft.com/detail/9n9n8v9g98s6';
+const MAC_URL = `${PANEL_URL}/autoupdate/RadioPanel.dmg`;
 const INFO_MAIL = 'info@asvstudios.it';
 const SUPPORT_MAIL = 'support@asvhosting.com';
 
@@ -70,6 +74,7 @@ const year = new Date().getFullYear();
 					<a href="#funzioni">Funzioni</a>
 					<a href="#compatibilita">Compatibilità</a>
 					<a href="#su-misura">Su misura</a>
+					<a href="#app">App</a>
 					<a href="#licenza">Licenza</a>
 					<a href="#contatti">Contatti</a>
 				</nav>
@@ -272,8 +277,52 @@ const year = new Date().getFullYear();
 				</div>
 			</section>
 
+			<!-- App desktop -->
+			<section class="section section-alt" id="app">
+				<div class="wrap app-grid">
+					<div>
+						<p class="eyebrow">App desktop</p>
+						<h2>RadioPanel sul tuo computer</h2>
+						<div class="tuning" aria-hidden="true"></div>
+						<p class="app-lead">
+							L'app per Windows e macOS apre il pannello nella sua finestra, con notifiche, avvisi sonori, accesso che resta attivo e la
+							postazione dello studio. Per entrare serve un account RadioPanel.
+						</p>
+						<p class="app-help">
+							<i class="bi bi-book" aria-hidden="true"></i>
+							Installazione e primo avvio passo per passo: <a href={`${DOCS_URL}/app-desktop/installazione/`}>guida all'installazione</a>
+						</p>
+					</div>
+					<div class="downloads">
+						<a class="download" href={WINDOWS_URL} rel="noopener">
+							<span class="download-icon"><i class="bi bi-windows" aria-hidden="true"></i></span>
+							<span class="download-text">
+								<span class="mono-label">Scarica per</span>
+								<strong>Windows</strong>
+								<span class="download-meta">Dal Microsoft Store, con aggiornamenti automatici</span>
+							</span>
+							<i class="bi bi-arrow-up-right download-arrow" aria-hidden="true"></i>
+						</a>
+						<a class="download" href={MAC_URL} download>
+							<span class="download-icon"><i class="bi bi-apple" aria-hidden="true"></i></span>
+							<span class="download-text">
+								<span class="mono-label">Scarica per</span>
+								<strong>macOS</strong>
+								<span class="download-meta">Immagine disco .dmg, da trascinare in Applicazioni</span>
+							</span>
+							<i class="bi bi-download download-arrow" aria-hidden="true"></i>
+						</a>
+						<p class="download-note">
+							<i class="bi bi-info-circle" aria-hidden="true"></i>
+							Sul Mac, al primo avvio, l'app va autorizzata una volta da Impostazioni di Sistema → Privacy e sicurezza.{' '}
+							<a href={`${DOCS_URL}/app-desktop/installazione/#il-primo-avvio-sul-mac`}>Come fare</a>
+						</p>
+					</div>
+				</div>
+			</section>
+
 			<!-- Licenza -->
-			<section class="section section-alt" id="licenza">
+			<section class="section" id="licenza">
 				<div class="wrap">
 					<div class="license">
 						<div class="license-text">
@@ -321,7 +370,7 @@ const year = new Date().getFullYear();
 			</section>
 
 			<!-- Contatti -->
-			<section class="section" id="contatti">
+			<section class="section section-alt" id="contatti">
 				<div class="wrap">
 					<header class="section-head">
 						<p class="eyebrow">Contatti</p>
