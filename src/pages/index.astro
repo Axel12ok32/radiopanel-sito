@@ -25,11 +25,12 @@ const supportMail = `mailto:${SUPPORT_MAIL}?subject=${encodeURIComponent('Suppor
 const features = [
 	{ icon: 'calendar-week', area: 'Palinsesto e dirette', text: 'Palinsesto settimanale con variazioni e sostituzioni, scaletta della diretta, turni dello staff e notifiche a chi va in onda.' },
 	{ icon: 'broadcast', area: 'In onda e ascolti', text: 'Brano in onda, stato dello streaming, chi è in diretta, ultimi brani trasmessi, ascoltatori e riascolto delle dirette.' },
+	{ icon: 'camera-video', area: 'Visual Radio e dirette video', text: 'Schermata in diretta per OBS, vMix o un televisore e dirette video dall\'app desktop, con fino a 3 ospiti anche esterni alla radio.' },
 	{ icon: 'people', area: 'Staff e collaboratori', text: 'Utenti, ruoli e permessi, account di gruppo, presenze, giustifiche, report delle ore e ricompense.' },
 	{ icon: 'collection', area: 'Contenuti della radio', text: 'Programmi, news, spot, scadenze e regolamento interno, in un unico posto per tutta la redazione.' },
 	{ icon: 'music-note-list', area: 'Richieste musicali', text: 'Moduli per le richieste degli ascoltatori, con l\'orario di messa in onda segnato da solo.' },
 	{ icon: 'pen', area: 'Documenti e firme', text: 'Documenti da firmare e da prendere in visione, moduli e candidature con raccolta delle risposte.' },
-	{ icon: 'display', area: 'Pagine pubbliche e studio', text: 'Palinsesto pubblico, Visual Radio, orologio dello studio con la spia ON AIR e postazione di regia.' },
+	{ icon: 'display', area: 'Pagine pubbliche e studio', text: 'Palinsesto pubblico, orologio dello studio con la spia ON AIR, postazione di regia e pagine per gli ascoltatori.' },
 	{ icon: 'globe2', area: 'Sito della radio', text: 'API per costruire il sito con i dati del pannello e analitiche del sito, con consenso dei visitatori.' },
 	{ icon: 'chat-dots', area: 'Comunicazioni', text: 'Notifiche nel pannello e sul browser, email, WhatsApp e SMS verso lo staff.' },
 	{ icon: 'shield-lock', area: 'Sicurezza', text: 'Accesso con passkey, verifica in due passaggi, registro delle attività e permessi per ogni pagina.' },
@@ -48,13 +49,13 @@ const year = new Date().getFullYear();
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>RadioPanel · Il pannello di gestione per le radio</title>
-		<meta name="description" content={`RadioPanel è il pannello di gestione per le radio di ${OWNER}: palinsesto, staff, dirette, contenuti e sito della radio in un unico posto. Compatibile con AzuraCast e MB Studio.`} />
+		<meta name="description" content={`RadioPanel è il pannello di gestione per le radio di ${OWNER}: palinsesto, staff, dirette anche in video con la Visual Radio, contenuti e sito della radio in un unico posto. Compatibile con AzuraCast e MB Studio.`} />
 		<meta name="theme-color" content="#0a1922" />
 		<link rel="canonical" href={Astro.site ? new URL('/', Astro.site).href : '/'} />
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="RadioPanel · Il pannello di gestione per le radio" />
-		<meta property="og:description" content="Palinsesto, staff, dirette, contenuti e sito della radio in un unico pannello. Compatibile con AzuraCast e MB Studio." />
+		<meta property="og:description" content="Palinsesto, staff, dirette anche in video, contenuti e sito della radio in un unico pannello. Compatibile con AzuraCast e MB Studio." />
 		<meta property="og:image" content={Astro.site ? new URL('/logo.png', Astro.site).href : '/logo.png'} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -72,6 +73,7 @@ const year = new Date().getFullYear();
 				</a>
 				<nav class="topnav" aria-label="Sezioni">
 					<a href="#funzioni">Funzioni</a>
+					<a href="#visual-radio">Visual Radio</a>
 					<a href="#compatibilita">Compatibilità</a>
 					<a href="#su-misura">Su misura</a>
 					<a href="#app">App</a>
@@ -98,8 +100,8 @@ const year = new Date().getFullYear();
 						<h1>La regia della tua radio, in un unico pannello.</h1>
 						<div class="tuning" aria-hidden="true"></div>
 						<p class="lead">
-							Palinsesto, dirette, staff, contenuti e sito della radio: RadioPanel mette tutto in un solo posto, per chi va in onda e
-							per chi dirige la radio.
+							Palinsesto, dirette anche in video, staff, contenuti e sito della radio: RadioPanel mette tutto in un solo posto, per chi
+							va in onda e per chi dirige la radio.
 						</p>
 						<div class="actions">
 							<a class="btn btn-primary btn-lg" href="#licenza">
@@ -205,8 +207,73 @@ const year = new Date().getFullYear();
 				</div>
 			</section>
 
+			<!-- Visual Radio e Diretta Video -->
+			<section class="section section-alt" id="visual-radio">
+				<div class="wrap">
+					<header class="section-head">
+						<p class="eyebrow">Visual Radio · novità</p>
+						<h2>La tua radio, anche in video</h2>
+						<p>
+							Una schermata in diretta da mandare in onda con OBS o vMix, o da lasciare su un televisore. E quando chi conduce accende la
+							webcam, la radio va in video con i suoi ospiti, senza una regia video dedicata.
+						</p>
+					</header>
+					<div class="cards cards-3">
+						<article class="card">
+							<div class="card-head">
+								<span class="card-icon"><i class="bi bi-display" aria-hidden="true"></i></span>
+								<div>
+									<h3>Schermata in diretta</h3>
+									<p class="mono-label">Sempre accesa, in 1920x1080</p>
+								</div>
+							</div>
+							<ul class="checks">
+								<li>Programma in onda con la spia ON AIR, palinsesto di oggi e brano con la copertina</li>
+								<li>Avvisi, promemoria dei podcast e messaggi degli ascoltatori a rotazione</li>
+								<li>Si aggiorna da sola, anche quando si aggiorna il pannello</li>
+								<li>Sorgente browser per OBS e vMix, o a tutto schermo su un televisore</li>
+							</ul>
+						</article>
+						<article class="card">
+							<div class="card-head">
+								<span class="card-icon"><i class="bi bi-camera-video" aria-hidden="true"></i></span>
+								<div>
+									<h3>Diretta Video</h3>
+									<p class="mono-label">Dall'app desktop</p>
+								</div>
+							</div>
+							<ul class="checks">
+								<li>Webcam e audio del mixer, in stereo e senza filtri sulla voce</li>
+								<li>La schermata passa al video con un'animazione e manda in onda l'audio della diretta</li>
+								<li>Solo durante il proprio programma, come dice il palinsesto</li>
+								<li>Codice QR per scrivere alla radio su WhatsApp e social di chi conduce</li>
+							</ul>
+						</article>
+						<article class="card">
+							<div class="card-head">
+								<span class="card-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+								<div>
+									<h3>Ospiti in video</h3>
+									<p class="mono-label">Fino a 4 persone insieme</p>
+								</div>
+							</div>
+							<ul class="checks">
+								<li>Fino a 3 ospiti: chi è della radio entra dall'app, chi è esterno con un link</li>
+								<li>Si vedono tra loro come in una videochiamata</li>
+								<li>Il conduttore decide per ognuno se il suo audio va in onda</li>
+								<li>Video leggero anche per i computer meno recenti, con un ritardo di una frazione di secondo</li>
+							</ul>
+						</article>
+					</div>
+					<p class="table-note">
+						Come si usa, passo per passo: <a href={`${DOCS_URL}/radio/diretta-video/`}>Diretta Video <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+						{' '}· <a href={`${DOCS_URL}/pubbliche/visual-radio/`}>Schermata della Visual Radio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+					</p>
+				</div>
+			</section>
+
 			<!-- Compatibilità nel dettaglio -->
-			<section class="section section-alt" id="compatibilita">
+			<section class="section" id="compatibilita">
 				<div class="wrap">
 					<header class="section-head">
 						<p class="eyebrow">Integrazioni</p>
@@ -250,7 +317,7 @@ const year = new Date().getFullYear();
 			</section>
 
 			<!-- Su misura -->
-			<section class="section" id="su-misura">
+			<section class="section section-alt" id="su-misura">
 				<div class="wrap">
 					<header class="section-head">
 						<p class="eyebrow">Su misura</p>
@@ -278,7 +345,7 @@ const year = new Date().getFullYear();
 			</section>
 
 			<!-- App desktop -->
-			<section class="section section-alt" id="app">
+			<section class="section" id="app">
 				<div class="wrap app-grid">
 					<div>
 						<p class="eyebrow">App desktop</p>
@@ -322,7 +389,7 @@ const year = new Date().getFullYear();
 			</section>
 
 			<!-- Licenza -->
-			<section class="section" id="licenza">
+			<section class="section section-alt" id="licenza">
 				<div class="wrap">
 					<div class="license">
 						<div class="license-text">
@@ -370,7 +437,7 @@ const year = new Date().getFullYear();
 			</section>
 
 			<!-- Contatti -->
-			<section class="section section-alt" id="contatti">
+			<section class="section" id="contatti">
 				<div class="wrap">
 					<header class="section-head">
 						<p class="eyebrow">Contatti</p>
