@@ -1,0 +1,25 @@
+---
+// Piè di pagina del sito vetrina, uguale in tutte le pagine.
+import { DOCS_URL, INFO_MAIL, OWNER, PANEL_URL, SUPPORT_MAIL, infoMail, supportMail } from '../links';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+	<div class="wrap footer-inner">
+		<div class="footer-brand">
+			<img src="/logo.png" alt="" width="28" height="28" />
+			<p>
+				<strong>RadioPanel</strong> è un software di {OWNER}.<br />
+				© {year} {OWNER}. Tutti i diritti riservati.
+			</p>
+		</div>
+		<nav class="footer-links" aria-label="Collegamenti">
+			<a href={PANEL_URL}>Pannello</a>
+			<a href={DOCS_URL}>Documentazione</a>
+			<a href={`${PANEL_URL}/termini-condizioni`}>Termini e privacy</a>
+			<a href={infoMail}>{INFO_MAIL}</a>
+			<a href={supportMail}>{SUPPORT_MAIL}</a>
+		</nav>
+	</div>
+</footer>

@@ -1,0 +1,41 @@
+---
+// Barra in alto del sito vetrina. Le voci portano alle sezioni della pagina principale:
+// `navBase` è vuoto nella pagina principale (link "#sezione") e "/" nelle altre pagine ("/#sezione").
+import { DOCS_URL, PANEL_URL } from '../links';
+
+interface Props {
+	navBase?: string;
+}
+
+const { navBase = '' } = Astro.props;
+
+const sections = [
+	{ id: 'funzioni', label: 'Funzioni' },
+	{ id: 'visual-radio', label: 'Visual Radio' },
+	{ id: 'compatibilita', label: 'Compatibilità' },
+	{ id: 'su-misura', label: 'Su misura' },
+	{ id: 'app', label: 'App' },
+	{ id: 'licenza', label: 'Licenza' },
+	{ id: 'contatti', label: 'Contatti' },
+];
+---
+
+<header class="topbar">
+	<div class="wrap topbar-inner">
+		<a class="brand" href="/" aria-label={navBase ? 'RadioPanel, pagina principale' : 'RadioPanel, inizio pagina'}>
+			<img src="/logo.png" alt="" width="32" height="32" />
+			<span>RadioPanel</span>
+		</a>
+		<nav class="topnav" aria-label="Sezioni">
+			{sections.map((s) => <a href={`${navBase}#${s.id}`}>{s.label}</a>)}
+		</nav>
+		<div class="topbar-actions">
+			<a class="btn btn-ghost" href={DOCS_URL} aria-label="Documentazione">
+				<i class="bi bi-journal-text" aria-hidden="true"></i><span class="hide-sm">Documentazione</span>
+			</a>
+			<a class="btn btn-primary" href={PANEL_URL}>
+				<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>Accedi
+			</a>
+		</div>
+	</div>
+</header>

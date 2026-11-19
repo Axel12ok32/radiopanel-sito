@@ -15,7 +15,10 @@ npm run preview    # anteprima della build
 
 ## Struttura
 
-- `src/pages/index.astro`: la pagina, con indirizzi del pannello e della documentazione, email di contatto ed elenco delle funzioni in alto nel frontmatter.
+- `src/pages/index.astro`: la pagina principale, con l'elenco delle funzioni in alto nel frontmatter.
+- `src/pages/newclient-email.astro` (indirizzo `/newclient-email`): pagina di arrivo per chi usava il vecchio programma di posta della radio (l'email ora è in RadioPanel: app per Windows, app per macOS o interfaccia web).
+- `src/links.ts`: indirizzi del pannello, della documentazione e delle app, email di contatto, usati da tutte le pagine.
+- `src/components/`: `<head>` comune (`Head.astro`), barra in alto (`Topbar.astro`) e piè di pagina (`Footer.astro`).
 - `src/styles/sito.css`: lo stile. I token `--rp-*` sono una copia di quelli di `_css/style.css`: tenerli allineati.
 - `public/`: logo e favicon.
 - `astro.config.mjs`: indirizzo pubblico del sito (`site`, oppure la variabile `SITE_URL`).

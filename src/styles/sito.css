@@ -956,6 +956,26 @@ td.col-check i {
 	margin-right: 6px;
 }
 
+/* Schede con una scelta da fare (pagina "newclient-email"): una colonna, tre affiancate solo su schermi larghi,
+ * perché dentro ci sono i pulsanti di download. L'azione sta sempre in fondo alla scheda. */
+.cards-options {
+	display: grid;
+	gap: 16px;
+}
+
+@media (min-width: 62rem) {
+	.cards-options {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.card-action {
+	display: grid;
+	gap: 10px;
+	margin-top: auto;
+	padding-top: 8px;
+}
+
 /* ============================================================
  * Licenza
  * ============================================================ */
