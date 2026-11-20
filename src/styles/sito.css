@@ -1260,6 +1260,22 @@ strong {
 	color: var(--rp-text);
 }
 
+/* Su schermi larghi i collegamenti stanno a destra del marchio, sulla stessa riga, e vanno a capo lì se non ci stanno */
+@media (min-width: 62rem) {
+	.footer-inner {
+		flex-wrap: nowrap;
+		align-items: center;
+	}
+
+	.footer-brand {
+		flex: none;
+	}
+
+	.footer-links {
+		justify-content: flex-end;
+	}
+}
+
 /* Su smartphone i pulsanti principali vanno uno sotto l'altro, larghi uguali */
 @media (max-width: 39.99rem) {
 	.hero .actions .btn,
