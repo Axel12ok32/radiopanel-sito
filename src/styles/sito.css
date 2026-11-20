@@ -1,10 +1,22 @@
 /*
  * Sito vetrina di RadioPanel, tema "Regia": gli stessi token di _css/style.css del pannello (STYLEGUIDE.md §2).
  * Fondo blu notte, superfici a gradini, testo crema, un solo colore che "accende": il rosso on air.
+ *
+ * Solo tema scuro, come il pannello (color-scheme: dark): il tema chiaro esiste solo nella documentazione.
+ * Il testo è a 16px / 1.6 (il pannello usa 15px / 1.55): è una pagina da leggere, non uno strumento di lavoro.
+ * Colori: solo token. Le trasparenze si ricavano dal token con color-mix(), mai con rgba() scritti a mano.
+ *
+ * Punti di rottura (sempre min-width, oppure max-width appena sotto la stessa soglia):
+ *   30rem  sotto questa larghezza l'anteprima dell'apertura è più compatta
+ *   40rem  etichetta "Documentazione" nella barra; sotto, pulsanti principali uno sotto l'altro
+ *   48rem  tabella delle funzioni vera (sotto: una scheda per riga), schede su due colonne, margine laterale 24px
+ *   62rem  apertura, app e licenza su due colonne; schede su tre colonne
+ *   70rem  menu delle sezioni sulla stessa riga della barra (sotto: seconda riga scorrevole)
+ *   75rem  margine laterale 32px
  */
 
 :root {
-	/* Token del pannello (copia di _css/style.css: tenerli allineati) */
+	/* Token del pannello: copia parziale di _css/style.css (solo le famiglie che servono qui), valori da tenere allineati */
 	--rp-bg: #0f222d;
 	--rp-sidebar: #0a1922;
 	--rp-surface: #132a37;
@@ -20,6 +32,7 @@
 	--rp-text-2: #bccad3;
 	--rp-text-3: #8ea2af;
 	--rp-cream: #ebe7d9;
+	--rp-white: #ffffff;
 	--rp-accent: #f55139;
 	--rp-accent-fill: #d63d26;
 	--rp-accent-fill-hover: #c2361f;
@@ -40,9 +53,30 @@
 	--rp-fast: 120ms;
 	--rp-mid: 220ms;
 
+	/* Margine laterale della pagina, come nel pannello: 16px, 24px da 48rem, 32px da 75rem */
+	--rp-gutter: 16px;
 	--wrap: 72rem;
-	--gutter: 16px;
+	/* Altezza della barra in alto, per fermare le ancore sotto di lei: due righe finché il menu sta sotto */
+	--topbar-h: 100px;
 	color-scheme: dark;
+}
+
+@media (min-width: 48rem) {
+	:root {
+		--rp-gutter: 24px;
+	}
+}
+
+@media (min-width: 70rem) {
+	:root {
+		--topbar-h: 60px;
+	}
+}
+
+@media (min-width: 75rem) {
+	:root {
+		--rp-gutter: 32px;
+	}
 }
 
 *,
@@ -53,7 +87,7 @@
 
 html {
 	scroll-behavior: smooth;
-	scroll-padding-top: 76px;
+	scroll-padding-top: calc(var(--topbar-h) + 16px);
 }
 
 body {
@@ -63,8 +97,16 @@ body {
 	font-family: var(--rp-font);
 	font-size: 1rem;
 	line-height: 1.6;
+	/* Indirizzi e parole lunghe vanno a capo invece di allargare la pagina, come nel pannello */
+	overflow-wrap: break-word;
 	-webkit-font-smoothing: antialiased;
+	/* Solo rete di sicurezza: nessun elemento deve sbordare (le griglie usano minmax(0, 1fr)) */
 	overflow-x: hidden;
+}
+
+::selection {
+	background: color-mix(in srgb, var(--rp-accent) 35%, transparent);
+	color: var(--rp-white);
 }
 
 img {
@@ -81,9 +123,26 @@ a:hover {
 	color: var(--rp-text);
 }
 
+/* Link dentro una frase: sottolineati, per non distinguerli solo dal colore */
+p a:not(.btn) {
+	text-decoration: underline;
+	text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+}
+
+p a:not(.btn):hover {
+	text-decoration-color: currentColor;
+}
+
 :focus-visible {
 	outline: 2px solid var(--rp-signal);
 	outline-offset: 2px;
+}
+
+/* Il raggio serve solo ai link senza una forma propria: pulsanti e schede tengono il loro */
+a:not([class]):focus-visible,
+.brand:focus-visible {
 	border-radius: var(--rp-r-xs);
 }
 
@@ -110,16 +169,7 @@ strong {
 	width: 100%;
 	max-width: var(--wrap);
 	margin-inline: auto;
-	padding-inline: var(--gutter);
-}
-
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	overflow: hidden;
-	clip: rect(0 0 0 0);
-	white-space: nowrap;
+	padding-inline: var(--rp-gutter);
 }
 
 .skip {
@@ -130,7 +180,7 @@ strong {
 	padding: 8px 14px;
 	border-radius: var(--rp-r-sm);
 	background: var(--rp-accent-fill);
-	color: #fff;
+	color: var(--rp-white);
 }
 
 .skip:focus {
@@ -139,7 +189,8 @@ strong {
 
 /* Etichetta tecnica in maiuscoletto monospazio, come nel pannello */
 .eyebrow,
-.mono-label {
+.mono-label,
+.features thead th {
 	font-family: var(--rp-mono);
 	font-size: 0.72rem;
 	font-weight: 500;
@@ -206,13 +257,13 @@ strong {
 .btn-primary {
 	background: var(--rp-accent-fill);
 	border-color: var(--rp-accent-fill);
-	color: #fff;
+	color: var(--rp-white);
 }
 
 .btn-primary:hover {
 	background: var(--rp-accent-fill-hover);
 	border-color: var(--rp-accent-fill-hover);
-	color: #fff;
+	color: var(--rp-white);
 }
 
 .btn-ghost {
@@ -243,21 +294,32 @@ strong {
 /* ============================================================
  * Barra in alto
  * ============================================================ */
+/* Sotto i 70rem la barra ha due righe: logo e pulsanti sopra, menu delle sezioni sotto (scorre in orizzontale
+ * se non ci sta). Da 70rem è tutto su una riga. L'altezza è scritta in --topbar-h (blocco :root). */
 .topbar {
 	position: sticky;
 	top: 0;
 	z-index: 50;
-	background: rgba(10, 25, 34, 0.88);
+	background: var(--rp-sidebar);
+	background: color-mix(in srgb, var(--rp-sidebar) 88%, transparent);
 	backdrop-filter: blur(10px);
-	-webkit-backdrop-filter: blur(10px);
 	border-bottom: 1px solid var(--rp-line-brand);
+}
+
+/* Safari prima della versione 18 conosce solo la forma con prefisso. Sta in una regola a parte perché, scritte
+ * insieme, la build ne tiene una sola delle due. */
+@supports not (backdrop-filter: blur(10px)) {
+	.topbar {
+		-webkit-backdrop-filter: blur(10px);
+	}
 }
 
 .topbar-inner {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: 16px;
-	height: 60px;
+	gap: 8px 16px;
+	padding-block: 11px 8px;
 }
 
 .brand {
@@ -280,22 +342,44 @@ strong {
 }
 
 .topnav {
-	display: none;
+	order: 3;
+	flex: 1 0 100%;
+	display: flex;
 	gap: 4px;
-	margin-inline: auto;
+	min-width: 0;
+	/* Esce fino al bordo della finestra, così le voci scorrono a tutta larghezza */
+	margin-inline: calc(var(--rp-gutter) * -1);
+	/* A destra almeno quanto la sfumatura: a fine scorrimento l'ultima voce si legge intera */
+	padding-inline: var(--rp-gutter) max(var(--rp-gutter), 28px);
+	overflow-x: auto;
+	scrollbar-width: none;
+	/* Sfumatura a destra: fa capire che le voci continuano */
+	-webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+	mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent);
+}
+
+.topnav::-webkit-scrollbar {
+	display: none;
 }
 
 .topnav a {
+	flex: none;
 	padding: 6px 12px;
 	border-radius: var(--rp-r-sm);
 	color: var(--rp-text-2);
 	font-size: 0.9rem;
 	font-weight: 500;
+	white-space: nowrap;
 }
 
 .topnav a:hover {
 	background: var(--rp-surface-2);
 	color: var(--rp-text);
+}
+
+/* Il menu scorre e taglia ciò che esce: il contorno del focus sta dentro la voce */
+.topnav a:focus-visible {
+	outline-offset: -2px;
 }
 
 .topbar-actions {
@@ -308,15 +392,37 @@ strong {
 	display: none;
 }
 
+/* Smartphone stretti (320px): pulsanti della barra più compatti per stare in una riga */
+@media (max-width: 22.49rem) {
+	.topbar-inner {
+		column-gap: 8px;
+	}
+
+	.topbar-actions .btn {
+		padding: 0 10px;
+	}
+}
+
 @media (min-width: 40rem) {
 	.hide-sm {
 		display: inline;
 	}
 }
 
-@media (min-width: 62rem) {
+@media (min-width: 70rem) {
+	.topbar-inner {
+		flex-wrap: nowrap;
+		height: var(--topbar-h);
+		padding-block: 0;
+	}
+
 	.topnav {
-		display: flex;
+		order: 0;
+		flex: 0 1 auto;
+		margin-inline: auto;
+		padding-inline: 0;
+		-webkit-mask-image: none;
+		mask-image: none;
 	}
 
 	.topbar-actions {
@@ -331,13 +437,14 @@ strong {
 	position: relative;
 	padding: 56px 0 64px;
 	background:
-		radial-gradient(60rem 30rem at 85% -10%, rgba(245, 81, 57, 0.12), transparent 60%),
-		radial-gradient(50rem 30rem at -10% 110%, rgba(94, 200, 220, 0.08), transparent 60%);
+		radial-gradient(60rem 30rem at 85% -10%, color-mix(in srgb, var(--rp-accent) 12%, transparent), transparent 60%),
+		radial-gradient(50rem 30rem at -10% 110%, color-mix(in srgb, var(--rp-signal) 8%, transparent), transparent 60%);
 	border-bottom: 1px solid var(--rp-line-soft);
 }
 
 .hero-grid {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 48px;
 	align-items: center;
 }
@@ -372,7 +479,7 @@ strong {
 	}
 
 	.hero-grid {
-		grid-template-columns: 1.05fr 0.95fr;
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
 		gap: 56px;
 	}
 }
@@ -397,6 +504,7 @@ strong {
 }
 
 .dot {
+	flex: none;
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
@@ -411,17 +519,22 @@ strong {
 	font-family: var(--rp-mono);
 	font-size: 0.72rem;
 	color: var(--rp-text-3);
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .preview-body {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 14px;
 	padding: 20px;
 }
 
 .onair {
 	display: grid;
-	grid-template-columns: auto 1fr auto;
+	grid-template-columns: auto minmax(0, 1fr) auto;
 	align-items: center;
 	gap: 14px;
 	padding: 14px 16px;
@@ -456,6 +569,12 @@ strong {
 	color: var(--rp-text-3);
 }
 
+/* Un indirizzo email o un titolo senza spazi va a capo dentro il riquadro */
+.onair-show,
+.onair-song {
+	overflow-wrap: anywhere;
+}
+
 .pill {
 	display: inline-flex;
 	align-items: center;
@@ -466,12 +585,14 @@ strong {
 	font-size: 0.68rem;
 	font-weight: 600;
 	letter-spacing: 0.08em;
+	flex: none;
+	white-space: nowrap;
 }
 
 .pill-live {
 	background: var(--rp-accent-soft);
 	color: var(--rp-accent-text);
-	border: 1px solid rgba(245, 81, 57, 0.4);
+	border: 1px solid color-mix(in srgb, var(--rp-accent) 40%, transparent);
 }
 
 .pill-now {
@@ -517,11 +638,12 @@ strong {
 }
 
 .schedule li:first-child {
-	background: rgba(94, 200, 220, 0.06);
+	background: color-mix(in srgb, var(--rp-signal) 6%, transparent);
 	box-shadow: inset 2px 0 0 var(--rp-signal);
 }
 
 .time {
+	flex: none;
 	font-family: var(--rp-mono);
 	font-size: 0.8rem;
 	color: var(--rp-text-3);
@@ -529,11 +651,15 @@ strong {
 
 .stats {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 10px;
 }
 
+/* Etichetta in alto e numero in basso: i tre numeri restano allineati anche se un'etichetta va su due righe */
 .stats > div {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	padding: 12px 14px;
 	border: 1px solid var(--rp-line);
 	border-radius: var(--rp-r);
@@ -549,7 +675,19 @@ strong {
 	margin-top: 2px;
 }
 
-@media (max-width: 30rem) {
+@media (max-width: 29.99rem) {
+	.preview-body {
+		padding: 14px;
+	}
+
+	.stats {
+		gap: 8px;
+	}
+
+	.stats > div {
+		padding: 10px 8px;
+	}
+
 	.stats .mono-label {
 		font-size: 0.62rem;
 		letter-spacing: 0.06em;
@@ -599,7 +737,7 @@ strong {
 }
 
 .section-alt {
-	background: linear-gradient(180deg, rgba(10, 25, 34, 0.55), rgba(10, 25, 34, 0.25));
+	background: linear-gradient(180deg, color-mix(in srgb, var(--rp-sidebar) 55%, transparent), color-mix(in srgb, var(--rp-sidebar) 25%, transparent));
 	border-block: 1px solid var(--rp-line-soft);
 }
 
@@ -609,6 +747,7 @@ strong {
 }
 
 .section-head h2,
+.app-grid h2,
 .license h2,
 .cta h2 {
 	font-size: clamp(1.7rem, 3.6vw, 2.4rem);
@@ -616,8 +755,12 @@ strong {
 	margin-bottom: 12px;
 }
 
-.section-head p:last-child {
+.section-head p:not(.eyebrow) {
 	font-size: 1.05rem;
+}
+
+.section-head p:not(.eyebrow) + p {
+	margin-top: 12px;
 }
 
 @media (min-width: 62rem) {
@@ -644,12 +787,6 @@ strong {
 	background: var(--rp-sidebar);
 	border-bottom: 1px solid var(--rp-line);
 	text-align: left;
-	font-family: var(--rp-mono);
-	font-size: 0.72rem;
-	font-weight: 500;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
-	color: var(--rp-text-3);
 }
 
 .features tbody th,
@@ -661,10 +798,6 @@ strong {
 
 .features tbody tr + tr > * {
 	border-top: 1px solid var(--rp-line-soft);
-}
-
-.features tbody tr:hover {
-	background: rgba(255, 245, 208, 0.03);
 }
 
 .features tbody th {
@@ -686,19 +819,8 @@ strong {
 	vertical-align: middle;
 }
 
-.col-check {
-	width: 1%;
-	text-align: center !important;
-	white-space: nowrap;
-}
-
-td.col-check i {
-	color: var(--rp-ok-text);
-	font-size: 1.05rem;
-}
-
 /* Su smartphone ogni riga diventa una scheda: area in alto, descrizione sotto */
-@media (max-width: 44rem) {
+@media (max-width: 47.99rem) {
 	.features thead {
 		display: none;
 	}
@@ -731,20 +853,12 @@ td.col-check i {
 		white-space: normal;
 	}
 
-	.features td:not(.col-check) {
+	.features td {
 		margin-top: 8px;
-	}
-
-	.features td.col-check {
-		position: absolute;
-		top: 20px;
-		right: 18px;
-		width: auto;
 	}
 
 	.features tbody th {
 		width: auto;
-		padding-right: 32px;
 	}
 }
 
@@ -756,16 +870,38 @@ td.col-check i {
 /* Schede */
 .cards {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 16px;
 }
 
+/* Due colonne da 48rem; le schede a tre (cards-3) diventano tre solo da 62rem, e fino ad allora la terza
+ * occupa tutta la riga. cards-options resta su una colonna fino a 62rem (dentro ha i pulsanti di download). */
 @media (min-width: 48rem) {
-	.cards-2 {
-		grid-template-columns: repeat(2, 1fr);
+	.cards-2,
+	.cards-3 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
-	.cards-3 {
-		grid-template-columns: repeat(3, 1fr);
+	.cards-3 > :last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+}
+
+/* Finché le scelte di "newclient-email" sono in colonna, quella valida per tutti (il browser) sta in testa */
+@media (max-width: 61.99rem) {
+	.cards-options > .card-web {
+		order: -1;
+	}
+}
+
+@media (min-width: 62rem) {
+	.cards-3,
+	.cards-options {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.cards-3 > :last-child:nth-child(odd) {
+		grid-column: auto;
 	}
 }
 
@@ -804,15 +940,36 @@ td.col-check i {
 	font-size: 1.2rem;
 }
 
-.card-link {
+/* Schede e pulsanti di download cliccabili: si sollevano al passaggio del mouse (non sui dispositivi a tocco,
+ * dove resterebbero sollevati dopo il tocco) */
+.card-link,
+.download {
 	transition: border-color var(--rp-mid) var(--rp-ease), transform var(--rp-mid) var(--rp-ease), background-color var(--rp-mid) ease;
 }
 
-.card-link:hover {
-	border-color: var(--rp-line-strong);
-	background: var(--rp-surface-2);
+.card-link:hover,
+.download:hover {
 	color: var(--rp-text-2);
-	transform: translateY(-2px);
+}
+
+@media (hover: hover) {
+	.card-link:hover,
+	.download:hover {
+		background: var(--rp-surface-2);
+		transform: translateY(-2px);
+	}
+
+	.card-link:hover {
+		border-color: var(--rp-line-strong);
+	}
+
+	.download:hover {
+		border-color: var(--rp-line-brand);
+	}
+
+	.features tbody tr:hover {
+		background: color-mix(in srgb, var(--rp-cream) 3%, transparent);
+	}
 }
 
 .card-mail {
@@ -851,13 +1008,9 @@ td.col-check i {
  * ============================================================ */
 .app-grid {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 36px;
 	align-items: center;
-}
-
-.app-grid h2 {
-	font-size: clamp(1.7rem, 3.6vw, 2.4rem);
-	font-weight: 750;
 }
 
 .app-lead {
@@ -877,13 +1030,14 @@ td.col-check i {
 
 @media (min-width: 62rem) {
 	.app-grid {
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 64px;
 	}
 }
 
 .downloads {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 12px;
 }
 
@@ -896,14 +1050,6 @@ td.col-check i {
 	border-radius: var(--rp-r-lg);
 	background: linear-gradient(180deg, var(--rp-surface-2), var(--rp-surface));
 	color: var(--rp-text-2);
-	transition: border-color var(--rp-mid) var(--rp-ease), transform var(--rp-mid) var(--rp-ease), background-color var(--rp-mid) ease;
-}
-
-.download:hover {
-	border-color: var(--rp-line-brand);
-	background: var(--rp-surface-2);
-	color: var(--rp-text-2);
-	transform: translateY(-2px);
 }
 
 .download-icon {
@@ -944,7 +1090,7 @@ td.col-check i {
 	height: 36px;
 	border-radius: var(--rp-r-sm);
 	background: var(--rp-accent-fill);
-	color: #fff;
+	color: var(--rp-white);
 }
 
 .download-note {
@@ -956,22 +1102,11 @@ td.col-check i {
 	margin-right: 6px;
 }
 
-/* Schede con una scelta da fare (pagina "newclient-email"): una colonna, tre affiancate solo su schermi larghi,
- * perché dentro ci sono i pulsanti di download. L'azione sta sempre in fondo alla scheda. */
-.cards-options {
-	display: grid;
-	gap: 16px;
-}
-
-@media (min-width: 62rem) {
-	.cards-options {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
+/* Schede con una scelta da fare (pagina "newclient-email", griglia "cards cards-options"): l'azione sta sempre
+ * in fondo alla scheda e contiene solo il pulsante, così i tre pulsanti restano alla stessa altezza. */
 .card-action {
 	display: grid;
-	gap: 10px;
+	grid-template-columns: minmax(0, 1fr);
 	margin-top: auto;
 	padding-top: 8px;
 }
@@ -981,6 +1116,7 @@ td.col-check i {
  * ============================================================ */
 .license {
 	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: 40px;
 	align-items: start;
 }
@@ -992,7 +1128,7 @@ td.col-check i {
 
 @media (min-width: 62rem) {
 	.license {
-		grid-template-columns: 1.15fr 0.85fr;
+		grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
 		gap: 64px;
 	}
 }
@@ -1038,7 +1174,7 @@ td.col-check i {
 
 .price {
 	color: var(--rp-text);
-	font-size: 1.9rem;
+	font-size: clamp(1.55rem, 8vw, 1.9rem);
 	font-weight: 800;
 	letter-spacing: -0.02em;
 	line-height: 1.1;
@@ -1060,6 +1196,12 @@ td.col-check i {
 	font-size: 0.82rem;
 	color: var(--rp-text-3);
 	text-align: center;
+}
+
+/* L'indirizzo a cui scrivere se il link "mailto:" non apre niente: ben leggibile e selezionabile con un clic */
+.license-hint strong {
+	color: var(--rp-text);
+	user-select: all;
 }
 
 /* ============================================================
@@ -1119,7 +1261,7 @@ td.col-check i {
 }
 
 /* Su smartphone i pulsanti principali vanno uno sotto l'altro, larghi uguali */
-@media (max-width: 40rem) {
+@media (max-width: 39.99rem) {
 	.hero .actions .btn,
 	.cta .actions .btn {
 		flex: 1 1 100%;

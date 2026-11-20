@@ -1,0 +1,19 @@
+---
+// Intestazione di una scheda: icona, titolo e riga di etichetta sotto il titolo.
+interface Props {
+	/** Nome dell'icona Bootstrap Icons, senza "bi-". */
+	icon: string;
+	title: string;
+	label: string;
+}
+
+const { icon, title, label } = Astro.props;
+---
+
+<div class="card-head">
+	<span class="card-icon"><i class={`bi bi-${icon}`} aria-hidden="true"></i></span>
+	<div>
+		<h3>{title}</h3>
+		<p class="mono-label">{label}</p>
+	</div>
+</div>

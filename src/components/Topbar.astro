@@ -1,40 +1,34 @@
 ---
-// Barra in alto del sito vetrina. Le voci portano alle sezioni della pagina principale:
-// `navBase` è vuoto nella pagina principale (link "#sezione") e "/" nelle altre pagine ("/#sezione").
-import { DOCS_URL, PANEL_URL } from '../links';
+// Barra in alto del sito vetrina. Le voci portano alle sezioni della pagina principale (elenco in src/links.ts):
+// nella pagina principale sono link "#sezione", nelle altre pagine "/#sezione".
+import { DOCS_URL, PANEL_URL, SECTIONS } from '../links';
 
 interface Props {
-	navBase?: string;
+	/** Pulsante principale della barra, se diverso da "Accedi" al pannello (es. /newclient-email porta all'email). */
+	access?: { href: string; label: string; title?: string; icon: string };
 }
 
-const { navBase = '' } = Astro.props;
+const { access = { href: PANEL_URL, label: 'Accedi', icon: 'box-arrow-in-right' } } = Astro.props;
 
-const sections = [
-	{ id: 'funzioni', label: 'Funzioni' },
-	{ id: 'visual-radio', label: 'Visual Radio' },
-	{ id: 'compatibilita', label: 'Compatibilità' },
-	{ id: 'su-misura', label: 'Su misura' },
-	{ id: 'app', label: 'App' },
-	{ id: 'licenza', label: 'Licenza' },
-	{ id: 'contatti', label: 'Contatti' },
-];
+const isHome = Astro.url.pathname === '/';
+const navBase = isHome ? '' : '/';
 ---
 
 <header class="topbar">
 	<div class="wrap topbar-inner">
-		<a class="brand" href="/" aria-label={navBase ? 'RadioPanel, pagina principale' : 'RadioPanel, inizio pagina'}>
+		<a class="brand" href="/" aria-label={isHome ? 'RadioPanel, inizio pagina' : 'RadioPanel, pagina principale'}>
 			<img src="/logo.png" alt="" width="32" height="32" />
 			<span>RadioPanel</span>
 		</a>
-		<nav class="topnav" aria-label="Sezioni">
-			{sections.map((s) => <a href={`${navBase}#${s.id}`}>{s.label}</a>)}
+		<nav class="topnav" aria-label={isHome ? 'Sezioni della pagina' : 'Sezioni della pagina principale'}>
+			{SECTIONS.map((s) => <a href={`${navBase}#${s.id}`}>{s.label}</a>)}
 		</nav>
 		<div class="topbar-actions">
 			<a class="btn btn-ghost" href={DOCS_URL} aria-label="Documentazione">
 				<i class="bi bi-journal-text" aria-hidden="true"></i><span class="hide-sm">Documentazione</span>
 			</a>
-			<a class="btn btn-primary" href={PANEL_URL}>
-				<i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>Accedi
+			<a class="btn btn-primary" href={access.href} title={access.title}>
+				<i class={`bi bi-${access.icon}`} aria-hidden="true"></i>{access.label}
 			</a>
 		</div>
 	</div>

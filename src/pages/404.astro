@@ -1,0 +1,29 @@
+---
+// Pagina mostrata da Cloudflare Pages per gli indirizzi che non esistono (dist/404.html).
+import Base from '../layouts/Base.astro';
+import { DOCS_URL } from '../links';
+---
+
+<Base title="Pagina non trovata · RadioPanel" description="La pagina cercata non esiste o ha cambiato indirizzo." noindex>
+	<section class="hero">
+		<div class="wrap">
+			<div class="hero-text">
+				<p class="eyebrow">Errore 404</p>
+				<h1>Pagina non trovata.</h1>
+				<div class="tuning" aria-hidden="true"></div>
+				<p class="lead">La pagina che cerchi non esiste o ha cambiato indirizzo. Riparti dalla pagina principale, dall'email della radio o dalla documentazione.</p>
+				<div class="actions">
+					<a class="btn btn-primary btn-lg" href="/">
+						<i class="bi bi-house" aria-hidden="true"></i>Pagina principale
+					</a>
+					<a class="btn btn-lg" href="/newclient-email/">
+						<i class="bi bi-envelope" aria-hidden="true"></i>Email della radio
+					</a>
+					<a class="btn btn-lg" href={DOCS_URL}>
+						<i class="bi bi-journal-text" aria-hidden="true"></i>Documentazione
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</Base>

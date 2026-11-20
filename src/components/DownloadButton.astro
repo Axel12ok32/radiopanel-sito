@@ -1,0 +1,27 @@
+---
+// Pulsante di download dell'app desktop. Indirizzi in src/links.ts.
+// `compact` toglie icona e riga descrittiva (schede di /newclient-email).
+import { MAC_URL, WINDOWS_URL } from '../links';
+
+interface Props {
+	os: 'windows' | 'mac';
+	compact?: boolean;
+}
+
+const { os, compact = false } = Astro.props;
+
+const app = {
+	windows: { href: WINDOWS_URL, name: 'Windows', icon: 'windows', arrow: 'arrow-up-right', meta: 'Dal Microsoft Store, con aggiornamenti automatici' },
+	mac: { href: MAC_URL, name: 'macOS', icon: 'apple', arrow: 'download', meta: 'Immagine disco .dmg, da trascinare in Applicazioni' },
+}[os];
+---
+
+<a class="download" href={app.href}>
+	{!compact && <span class="download-icon"><i class={`bi bi-${app.icon}`} aria-hidden="true" /></span>}
+	<span class="download-text">
+		<span class="mono-label">Scarica per</span>
+		<strong>{app.name}</strong>
+		{!compact && <span class="download-meta">{app.meta}</span>}
+	</span>
+	<i class={`bi bi-${app.arrow} download-arrow`} aria-hidden="true"></i>
+</a>

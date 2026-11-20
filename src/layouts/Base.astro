@@ -1,0 +1,40 @@
+---
+// Scheletro comune a tutte le pagine: <head>, link "Vai al contenuto", barra in alto, <main> e piè di pagina.
+// Il contenuto della pagina va nello slot; eventuali tag in più per il <head> (dati strutturati) nello slot "head".
+import '../styles/sito.css';
+import Head from '../components/Head.astro';
+import Topbar from '../components/Topbar.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	/** Descrizione per l'anteprima sui social; se manca si usa `description`. */
+	ogDescription?: string;
+	/** Pagina da non far comparire nei motori di ricerca (es. la 404). */
+	noindex?: boolean;
+	/** Pulsante principale della barra in alto, se diverso da "Accedi" (vedi Topbar.astro). */
+	access?: { href: string; label: string; title?: string; icon: string };
+}
+
+const { title, description, ogDescription, noindex, access } = Astro.props;
+---
+
+<!doctype html>
+<html lang="it">
+	<head>
+		<Head title={title} description={description} ogDescription={ogDescription} noindex={noindex} />
+		<slot name="head" />
+	</head>
+	<body>
+		<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+		<Topbar access={access} />
+
+		<main id="contenuto">
+			<slot />
+		</main>
+
+		<Footer />
+	</body>
+</html>

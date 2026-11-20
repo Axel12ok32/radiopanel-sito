@@ -1,33 +1,45 @@
 ---
 // Intestazione <head> comune: titolo, descrizione, indirizzo canonico, anteprima per i social, caratteri e icone.
-import '../styles/sito.css';
-
+// L'indirizzo canonico è quello con cui la pagina viene pubblicata (Astro.url): non va passato a mano.
 interface Props {
 	title: string;
 	description: string;
-	/** Indirizzo della pagina, per il link canonico (es. "/" o "/newclient-email"). */
-	path: string;
 	/** Descrizione per l'anteprima sui social; se manca si usa `description`. */
 	ogDescription?: string;
+	/** Pagina da non far comparire nei motori di ricerca (es. la 404): niente indirizzo canonico. */
+	noindex?: boolean;
 }
 
-const { title, description, path, ogDescription = description } = Astro.props;
-const canonical = Astro.site ? new URL(path, Astro.site).href : path;
+const { title, description, ogDescription = description, noindex = false } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.pathname;
 const ogImage = Astro.site ? new URL('/logo.png', Astro.site).href : '/logo.png';
+// Lo stesso valore di --rp-sidebar in sito.css (qui i token CSS non si possono usare)
+const themeColor = '#0a1922';
 ---
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title>
 <meta name="description" content={description} />
-<meta name="theme-color" content="#0a1922" />
-<link rel="canonical" href={canonical} />
-<link rel="icon" type="image/png" href="/favicon.png" />
+<meta name="theme-color" content={themeColor} />
+{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png" />
 <meta property="og:type" content="website" />
+<meta property="og:site_name" content="RadioPanel" />
+<meta property="og:locale" content="it_IT" />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={ogDescription} />
+{!noindex && <meta property="og:url" content={canonical} />}
 <meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="256" />
+<meta property="og:image:height" content="256" />
+<meta property="og:image:alt" content="Logo di RadioPanel" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={ogDescription} />
+<meta name="twitter:image" content={ogImage} />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400..800;1,400..600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />

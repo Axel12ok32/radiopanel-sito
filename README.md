@@ -17,13 +17,18 @@ npm run preview    # anteprima della build
 
 - `src/pages/index.astro`: la pagina principale, con l'elenco delle funzioni in alto nel frontmatter.
 - `src/pages/newclient-email.astro` (indirizzo `/newclient-email`): pagina di arrivo per chi usava il vecchio programma di posta della radio (l'email ora è in RadioPanel: app per Windows, app per macOS o interfaccia web).
-- `src/links.ts`: indirizzi del pannello, della documentazione e delle app, email di contatto, usati da tutte le pagine.
-- `src/components/`: `<head>` comune (`Head.astro`), barra in alto (`Topbar.astro`) e piè di pagina (`Footer.astro`).
-- `src/styles/sito.css`: lo stile. I token `--rp-*` sono una copia di quelli di `_css/style.css`: tenerli allineati.
+- `src/pages/404.astro`: pagina "non trovata", mostrata da Cloudflare Pages per gli indirizzi che non esistono.
+- `src/pages/sitemap.xml.ts` e `src/pages/robots.txt.ts`: elenco delle pagine per i motori di ricerca (`/sitemap.xml`, `/robots.txt`). Una pagina nuova in `src/pages/` entra da sola nell'elenco.
+- `src/layouts/Base.astro`: lo scheletro di ogni pagina (`<head>`, barra in alto, `<main>`, piè di pagina). Una pagina nuova si scrive dentro `<Base title="…" description="…">`.
+- `src/links.ts`: indirizzi del pannello, della documentazione e delle app, email di contatto e sezioni della pagina principale (`SECTIONS`: le voci del menu in alto e gli `id` delle sezioni), usati da tutte le pagine. Gli indirizzi non si scrivono a mano nelle pagine.
+- `src/components/`: `<head>` comune (`Head.astro`), barra in alto (`Topbar.astro`), piè di pagina (`Footer.astro`), intestazione delle schede (`CardHead.astro`) e pulsanti di download dell'app (`DownloadButton.astro`).
+- `src/styles/sito.css`: lo stile. I token `--rp-*` sono una copia parziale di quelli di `_css/style.css` (solo quelli che servono al sito): tenerne allineati i valori. Solo tema scuro, come il pannello. Punti di rottura e regole sui colori sono scritti nel commento in testa al file.
 - `public/`: logo e favicon.
 - `astro.config.mjs`: indirizzo pubblico del sito (`site`, oppure la variabile `SITE_URL`).
 
 Quando l'elenco delle funzioni nel pannello cambia in modo importante, aggiornare anche la tabella "Cosa offre".
+
+L'anno nel piè di pagina è quello dell'ultima pubblicazione: a inizio anno il sito va ripubblicato.
 
 ## Pubblicazione su Cloudflare Pages
 
@@ -34,7 +39,7 @@ Quando l'elenco delle funzioni nel pannello cambia in modo importante, aggiornar
    - Build command: `npm run build`
    - Build output directory: `dist`
    - Root directory: `sito` se il repository contiene tutto il pannello, vuoto se contiene solo il sito
-   - Variabile d'ambiente `NODE_VERSION` = `22`
+   - Versione di Node: la legge dal file `.node-version` (22); in alternativa la variabile d'ambiente `NODE_VERSION` = `22`
 4. In **Custom domains** aggiungere `radiopanel.app` (e, se serve, `www.radiopanel.app` con reindirizzamento a `radiopanel.app`).
 
 ### Portare solo il sito su GitHub

@@ -1,171 +1,137 @@
 ---
 // Pagina di arrivo per chi usava il vecchio programma di posta della radio: l'email ora è in RadioPanel.
 // Tre scelte: app per Windows, app per macOS, interfaccia web del pannello.
-import Head from '../components/Head.astro';
-import Topbar from '../components/Topbar.astro';
-import Footer from '../components/Footer.astro';
-import { DOCS_URL, MAC_URL, PANEL_URL, WINDOWS_URL } from '../links';
+import Base from '../layouts/Base.astro';
+import CardHead from '../components/CardHead.astro';
+import DownloadButton from '../components/DownloadButton.astro';
+import { DOCS, PANEL, PANEL_HOST } from '../links';
 
-const WEBMAIL_URL = `${PANEL_URL}/public/areapersonale/email`;
-const EMAIL_DOCS_URL = `${DOCS_URL}/utente/email/`;
+// Chi arriva qui può avere solo la casella, senza account del pannello: il pulsante della barra porta all'email
+const access = { href: PANEL.webmail, label: 'Email', title: "Apri l'email della radio dal browser", icon: 'envelope' };
 ---
 
-<!doctype html>
-<html lang="it">
-	<head>
-		<Head
-			title="L'email della radio ora è in RadioPanel"
-			description="Il programma per leggere le email della radio si è spostato in RadioPanel: scarica l'app per Windows o macOS, oppure usa l'interfaccia web dal browser."
-			path="/newclient-email"
-		/>
-	</head>
-	<body>
-		<a class="skip" href="#contenuto">Vai al contenuto</a>
+<Base
+	access={access}
+	title="L'email della radio ora è in RadioPanel"
+	description="Il programma per leggere le email della radio si è spostato in RadioPanel: scarica l'app per Windows o macOS, oppure usa l'interfaccia web dal browser."
+>
+	<section class="hero">
+		<div class="wrap hero-grid">
+			<div class="hero-text">
+				<p class="eyebrow">Email della radio</p>
+				<h1>L'email della radio ora è in RadioPanel.</h1>
+				<div class="tuning" aria-hidden="true"></div>
+				<p class="lead">
+					Il programma che usavi per leggere e scrivere le email della radio si è spostato dentro RadioPanel. Scegli qui sotto come
+					vuoi usarlo: con l'app sul tuo computer oppure direttamente dal browser.
+				</p>
+				<div class="actions">
+					<a class="btn btn-primary btn-lg" href="#scegli">
+						Scegli come usarla<i class="bi bi-arrow-down" aria-hidden="true"></i>
+					</a>
+					<a class="btn btn-lg" href={PANEL.webmail}>
+						<i class="bi bi-globe2" aria-hidden="true"></i>Apri dal browser
+					</a>
+				</div>
+			</div>
 
-		<Topbar navBase="/" />
-
-		<main id="contenuto">
-			<section class="hero">
-				<div class="wrap hero-grid">
-					<div class="hero-text">
-						<p class="eyebrow">Email della radio</p>
-						<h1>L'email della radio ora è in RadioPanel.</h1>
-						<div class="tuning" aria-hidden="true"></div>
-						<p class="lead">
-							Il programma che usavi per leggere e scrivere le email della radio si è spostato dentro RadioPanel. Scegli qui sotto come
-							vuoi usarlo: con l'app sul tuo computer oppure direttamente dal browser.
-						</p>
-						<div class="actions">
-							<a class="btn btn-primary btn-lg" href="#scegli">
-								Scegli come usarla<i class="bi bi-arrow-down" aria-hidden="true"></i>
-							</a>
-							<a class="btn btn-lg" href={WEBMAIL_URL}>
-								<i class="bi bi-globe2" aria-hidden="true"></i>Apri dal browser
-							</a>
+			<!-- Anteprima disegnata della posta in RadioPanel (dati di esempio), come quella del pannello nella home -->
+			<div class="preview" aria-hidden="true">
+				<div class="preview-bar">
+					<span class="dot"></span><span class="dot"></span><span class="dot"></span>
+					<span class="preview-url">{PANEL_HOST}</span>
+				</div>
+				<div class="preview-body">
+					<div class="onair">
+						<span class="onair-led"></span>
+						<div>
+							<p class="mono-label">Posta in arrivo</p>
+							<p class="onair-show">redazione@radioesempio.it</p>
+							<p class="onair-song"><i class="bi bi-envelope-paper"></i> 3 email nuove da leggere</p>
 						</div>
+						<span class="pill pill-live">NUOVE</span>
 					</div>
-
-					<!-- Anteprima disegnata della posta in RadioPanel (dati di esempio), come quella del pannello nella home -->
-					<div class="preview" aria-hidden="true">
-						<div class="preview-bar">
-							<span class="dot"></span><span class="dot"></span><span class="dot"></span>
-							<span class="preview-url">client.radiopanel.app/email</span>
-						</div>
-						<div class="preview-body">
-							<div class="onair">
-								<span class="onair-led"></span>
-								<div>
-									<p class="mono-label">Posta in arrivo</p>
-									<p class="onair-show">redazione@radioesempio.it</p>
-									<p class="onair-song"><i class="bi bi-envelope-paper"></i> 3 email nuove da leggere</p>
-								</div>
-								<span class="pill pill-live">NUOVE</span>
-							</div>
-							<p class="mono-label">Oggi</p>
-							<ul class="schedule">
-								<li><span class="time">09:41</span><span>Ufficio stampa · Comunicato del concerto</span><span class="pill pill-now">nuova</span></li>
-								<li><span class="time">09:12</span><span>Mario Rossi · Intervista di martedì</span><span class="pill pill-now">nuova</span></li>
-								<li><span class="time">08:30</span><span>Agenzia · Spot della settimana</span></li>
-								<li><span class="time">07:55</span><span>Sara Blu · Scaletta di Drive Time</span></li>
-							</ul>
-							<div class="stats">
-								<div><p class="mono-label">Non lette</p><p class="stat">3</p></div>
-								<div><p class="mono-label">Caselle</p><p class="stat">2</p></div>
-								<div><p class="mono-label">Inviate oggi</p><p class="stat">7</p></div>
-							</div>
-						</div>
+					<p class="mono-label">Oggi</p>
+					<ul class="schedule">
+						<li><span class="time">09:41</span><span>Ufficio stampa · Comunicato del concerto</span><span class="pill pill-now">nuova</span></li>
+						<li><span class="time">09:12</span><span>Mario Rossi · Intervista di martedì</span><span class="pill pill-now">nuova</span></li>
+						<li><span class="time">08:30</span><span>Agenzia · Spot della settimana</span></li>
+						<li><span class="time">07:55</span><span>Sara Blu · Scaletta di Drive Time</span></li>
+					</ul>
+					<div class="stats">
+						<div><p class="mono-label">Non lette</p><p class="stat">3</p></div>
+						<div><p class="mono-label">Caselle</p><p class="stat">2</p></div>
+						<div><p class="mono-label">Inviate oggi</p><p class="stat">7</p></div>
 					</div>
 				</div>
-			</section>
+			</div>
+		</div>
+	</section>
 
-			<section class="section" id="scegli">
-				<div class="wrap">
-					<header class="section-head">
-						<p class="eyebrow">Tre modi</p>
-						<h2>Scegli come aprire le tue email</h2>
-						<p>
-							L'interfaccia web funziona ovunque, senza installare niente. L'app desktop fa qualcosa in più: la firma con il tuo nome e i
-							tuoi ruoli, l'avviso delle email nuove con il numero di quelle da leggere, più caselle per chi gestisce la radio e le
-							finestre affiancate.
-						</p>
-					</header>
+	<section class="section" id="scegli">
+		<div class="wrap">
+			<header class="section-head">
+				<p class="eyebrow">App o browser</p>
+				<h2>Scegli come aprire le tue email</h2>
+				<p>
+					<strong>Hai un account RadioPanel?</strong> Scarica l'app desktop: in più ha la firma con il tuo nome e i tuoi ruoli,
+					l'avviso delle email nuove con il numero di quelle da leggere, più caselle per chi gestisce la radio e le finestre
+					affiancate.
+				</p>
+				<p>
+					<strong>Non hai un account, o non sei al tuo computer?</strong> Usa l'interfaccia web: funziona ovunque senza installare
+					niente. Ti servono il codice emittente (te lo dà la direzione della radio), l'indirizzo della casella e la sua password.
+				</p>
+			</header>
 
-					<div class="cards-options">
-						<article class="card">
-							<div class="card-head">
-								<span class="card-icon"><i class="bi bi-windows" aria-hidden="true"></i></span>
-								<div>
-									<h3>App per Windows</h3>
-									<p class="mono-label">Dal Microsoft Store</p>
-								</div>
-							</div>
-							<p>Si installa dal Microsoft Store e si aggiorna da sola. Entri con il tuo account RadioPanel e trovi l'email della radio.</p>
-							<div class="card-action">
-								<a class="download" href={WINDOWS_URL} rel="noopener">
-									<span class="download-text">
-										<span class="mono-label">Scarica per</span>
-										<strong>Windows</strong>
-									</span>
-									<i class="bi bi-arrow-up-right download-arrow" aria-hidden="true"></i>
-								</a>
-							</div>
-						</article>
-
-						<article class="card">
-							<div class="card-head">
-								<span class="card-icon"><i class="bi bi-apple" aria-hidden="true"></i></span>
-								<div>
-									<h3>App per macOS</h3>
-									<p class="mono-label">Immagine disco .dmg</p>
-								</div>
-							</div>
-							<p>Apri il file scaricato e trascina RadioPanel in Applicazioni. Entri con il tuo account RadioPanel e trovi l'email della radio.</p>
-							<div class="card-action">
-								<a class="download" href={MAC_URL} download>
-									<span class="download-text">
-										<span class="mono-label">Scarica per</span>
-										<strong>macOS</strong>
-									</span>
-									<i class="bi bi-download download-arrow" aria-hidden="true"></i>
-								</a>
-								<p class="download-note">
-									<i class="bi bi-info-circle" aria-hidden="true"></i>
-									Al primo avvio l'app va autorizzata una volta da Impostazioni di Sistema → Privacy e sicurezza.{' '}
-									<a href={`${DOCS_URL}/app-desktop/installazione/#il-primo-avvio-sul-mac`}>Come fare</a>
-								</p>
-							</div>
-						</article>
-
-						<article class="card">
-							<div class="card-head">
-								<span class="card-icon"><i class="bi bi-globe2" aria-hidden="true"></i></span>
-								<div>
-									<h3>Interfaccia web</h3>
-									<p class="mono-label">Dal browser, ovunque</p>
-								</div>
-							</div>
-							<p>
-								Inserisci il codice emittente della tua radio, l'email della tua casella e la sua password. Funziona da qualsiasi computer,
-								tablet o smartphone.
-							</p>
-							<p>
-								Se hai un account RadioPanel, da qui puoi anche salvare la casella nel tuo account: l'app desktop la aprirà direttamente.
-							</p>
-							<div class="card-action">
-								<a class="btn btn-primary btn-lg btn-block" href={WEBMAIL_URL}>
-									<i class="bi bi-envelope-open" aria-hidden="true"></i>Apri l'email nel browser
-								</a>
-							</div>
-						</article>
+			<div class="cards cards-options">
+				<article class="card">
+					<CardHead icon="windows" title="App per Windows" label="Dal Microsoft Store" />
+					<p>Si installa dal Microsoft Store e si aggiorna da sola. Entri con il tuo account RadioPanel e trovi l'email della radio.</p>
+					<div class="card-action">
+						<DownloadButton os="windows" compact />
 					</div>
+				</article>
 
-					<p class="table-note">
-						Hai bisogno di una mano? <a href={EMAIL_DOCS_URL}>Come si usa l'email della radio <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+				<article class="card">
+					<CardHead icon="apple" title="App per macOS" label="Immagine disco .dmg" />
+					<p>Apri il file scaricato e trascina RadioPanel in Applicazioni. Entri con il tuo account RadioPanel e trovi l'email della radio.</p>
+					<p class="download-note">
+						<i class="bi bi-info-circle" aria-hidden="true"></i>
+						Al primo avvio l'app va autorizzata una volta da Impostazioni di Sistema → Privacy e sicurezza.{' '}
+						<a href={DOCS.primoAvvioMac}>Come fare</a>
 					</p>
-				</div>
-			</section>
-		</main>
+					<div class="card-action">
+						<DownloadButton os="mac" compact />
+					</div>
+				</article>
 
-		<Footer />
-	</body>
-</html>
+				{/* card-web: sotto i 62rem, dove le schede sono in colonna, questa va per prima (vale per tutti, anche da telefono) */}
+				<article class="card card-web">
+					<CardHead icon="globe2" title="Interfaccia web" label="Dal browser, ovunque" />
+					<p>
+						Scrivi il codice emittente della tua radio (te lo dà la direzione), l'indirizzo della tua casella e la sua password.
+						Funziona da qualsiasi computer, tablet o smartphone.
+					</p>
+					<p>
+						Se hai un account RadioPanel, da qui puoi anche salvare la casella nel tuo account: l'app desktop la aprirà direttamente.
+					</p>
+					<div class="card-action">
+						<a class="download" href={PANEL.webmail}>
+							<span class="download-text">
+								<span class="mono-label">Apri l'email nel</span>
+								<strong>Browser</strong>
+							</span>
+							<i class="bi bi-arrow-up-right download-arrow" aria-hidden="true"></i>
+						</a>
+					</div>
+				</article>
+			</div>
+
+			<p class="table-note">
+				Hai bisogno di una mano? <a href={DOCS.emailBrowser}>Entrare dal browser, passo per passo <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+				{' '}· <a href={DOCS.email}>Come si usa l'email nell'app <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+			</p>
+		</div>
+	</section>
+</Base>
