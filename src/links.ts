@@ -30,6 +30,8 @@ export const DOCS = {
 	primoAvvioMac: `${DOCS_URL}/app-desktop/installazione/#il-primo-avvio-sul-mac`,
 	email: `${DOCS_URL}/utente/email/`,
 	emailBrowser: `${DOCS_URL}/pubbliche/email-dal-browser/`,
+	appCollegate: `${DOCS_URL}/gestione-radiopanel/app-collegate/`,
+	driveCondiviso: `${DOCS_URL}/utility/drive-condiviso/`,
 };
 
 // Sezioni della pagina principale, nell'ordine del menu in alto. Gli `id` delle sezioni in index.astro

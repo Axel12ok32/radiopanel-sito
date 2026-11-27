@@ -8,8 +8,8 @@ import DownloadButton from '../components/DownloadButton.astro';
 import { DOCS, DOCS_HOST, DOCS_URL, INFO_MAIL, OWNER, PANEL_HOST, PANEL_URL, SUPPORT_MAIL, infoMail, sectionId, supportMail } from '../links';
 
 const title = 'RadioPanel · Il pannello di gestione per le radio';
-const description = `RadioPanel è il pannello di gestione per le radio di ${OWNER}: palinsesto, staff, dirette anche in video con la Visual Radio, contenuti e sito della radio in un unico posto. Compatibile con AzuraCast e MB Studio.`;
-const ogDescription = 'Palinsesto, staff, dirette anche in video, contenuti e sito della radio in un unico pannello. Compatibile con AzuraCast e MB Studio.';
+const description = `RadioPanel è il pannello di gestione per le radio di ${OWNER}: palinsesto, staff, dirette anche in video con la Visual Radio, contenuti e sito della radio in un unico posto. Compatibile con AzuraCast, MB Studio e Nextcloud, e provider OpenID Connect per l'accesso alle altre app.`;
+const ogDescription = 'Palinsesto, staff, dirette anche in video, contenuti e sito della radio in un unico pannello. Compatibile con AzuraCast, MB Studio e Nextcloud.';
 
 // Dati strutturati per i motori di ricerca (niente prezzo: il costo della licenza è personalizzato)
 const siteUrl = new URL('/', Astro.site ?? Astro.url).href;
@@ -34,7 +34,7 @@ const licenseMail =
 	`mailto:${INFO_MAIL}?subject=${encodeURIComponent('Richiesta attivazione licenza RadioPanel')}&body=${encodeURIComponent(
 		'Buongiorno,\n\nvorrei richiedere l\'attivazione di una licenza RadioPanel.\n\n' +
 			'Nome della radio:\nSito web della radio:\nNumero di radio da gestire:\nNumero indicativo di utenti (staff e collaboratori):\n' +
-			'Software usati (AzuraCast, MB Studio, altro):\nFunzioni o personalizzazioni richieste:\n\nReferente e recapito:\n',
+			'Software usati (AzuraCast, MB Studio, Nextcloud, altro):\nFunzioni o personalizzazioni richieste:\n\nReferente e recapito:\n',
 	)}`;
 
 const features = [
@@ -49,10 +49,11 @@ const features = [
 	{ icon: 'globe2', area: 'Sito della radio', text: 'I dati del pannello (palinsesto, programmi, news) sul sito della radio tramite API, e statistiche delle visite con il consenso dei visitatori e report da stampare.' },
 	{ icon: 'chat-dots', area: 'Comunicazioni', text: 'Notifiche nel pannello e sul browser ed email allo staff; chat WhatsApp della radio lette e risposte dal pannello.' },
 	{ icon: 'envelope', area: 'Email della radio', text: 'Le caselle della radio nell\'app desktop e dal browser: leggere, scrivere e rispondere con la firma comune e il logo, più caselle per la direzione e avviso delle email nuove.' },
+	{ icon: 'key', area: 'Accedi con RadioPanel', text: 'RadioPanel è un provider OpenID Connect: Nextcloud e le altre app della radio fanno entrare lo staff con l\'account del pannello, con la stessa password e la verifica in due passaggi, e mettono ognuno nei gruppi della sua radio.' },
 	{ icon: 'shield-lock', area: 'Sicurezza', text: 'Accesso con passkey, verifica in due passaggi, registro delle attività, permessi per ogni pagina e analitiche di come si usa il pannello, mostrate solo come totali.' },
 	{ icon: 'diagram-3', area: 'Più radio, un pannello', text: 'Più emittenti nello stesso pannello, ognuna con le sue pagine, il suo staff e i suoi collegamenti, e gruppi radiofonici che gestiscono insieme palinsesti, spot, firme, news, email e knowledge.' },
 	{ icon: 'window-desktop', area: 'App e dispositivi', text: 'App desktop per Windows e macOS e pannello installabile dal browser su computer, tablet e smartphone.' },
-	{ icon: 'tools', area: 'Utility', text: 'Knowledge base interna, drive condiviso e programmi da scaricare per lo staff.' },
+	{ icon: 'tools', area: 'Utility', text: 'Knowledge base interna, programmi da scaricare e drive condiviso: con Nextcloud collegato, ognuno vede i suoi file, le cartelle di team e i file condivisi direttamente nel pannello, e li ascolta senza scaricarli.' },
 	{ icon: 'life-preserver', area: 'Assistenza', text: 'Ticket di assistenza direttamente dal pannello, documentazione completa e supporto dedicato.' },
 ];
 ---
@@ -81,8 +82,8 @@ const features = [
 				</div>
 				<p class="hero-note">
 					<i class="bi bi-patch-check" aria-hidden="true"></i>
-					Un software di <strong>{OWNER}</strong> · non sostituisce la messa in onda: si collega ad <strong>AzuraCast</strong> e{' '}
-					<strong>MB Studio</strong>
+					Un software di <strong>{OWNER}</strong> · non sostituisce la messa in onda: si collega ad <strong>AzuraCast</strong>,{' '}
+					<strong>MB Studio</strong> e <strong>Nextcloud</strong>
 				</p>
 			</div>
 
@@ -127,6 +128,8 @@ const features = [
 			<div class="strip-items">
 				<span><i class="bi bi-soundwave" aria-hidden="true"></i>AzuraCast</span>
 				<span><i class="bi bi-sliders2-vertical" aria-hidden="true"></i>MB Studio</span>
+				<span><i class="bi bi-cloud" aria-hidden="true"></i>Nextcloud</span>
+				<span><i class="bi bi-key" aria-hidden="true"></i>OpenID Connect</span>
 				<span><i class="bi bi-windows" aria-hidden="true"></i>Windows</span>
 				<span><i class="bi bi-apple" aria-hidden="true"></i>macOS</span>
 				<span><i class="bi bi-phone" aria-hidden="true"></i>Smartphone e tablet</span>
@@ -226,7 +229,7 @@ const features = [
 			<header class="section-head">
 				<p class="eyebrow">Integrazioni</p>
 				<h2>Lavora con gli strumenti che la radio usa già</h2>
-				<p>RadioPanel si collega allo streaming e al programma di messa in onda della radio: niente doppio lavoro, i dati arrivano da soli.</p>
+				<p>RadioPanel si collega allo streaming, al programma di messa in onda e al cloud della radio: niente doppio lavoro, i dati arrivano da soli, e un solo account apre tutte le app.</p>
 			</header>
 			<div class="cards cards-2">
 				<article class="card">
@@ -248,7 +251,29 @@ const features = [
 						<li>Funziona insieme ad AzuraCast per stato della radio e ascoltatori</li>
 					</ul>
 				</article>
+				<article class="card">
+					<CardHead icon="cloud" title="Nextcloud" label="File, calendari e videochiamate" />
+					<ul class="checks">
+						<li>Si entra in Nextcloud con l'account del pannello: "Accedi con RadioPanel"</li>
+						<li>Ognuno finisce da solo nei gruppi Nextcloud della sua radio</li>
+						<li>File personali, cartelle di team e file condivisi nel Drive condiviso del pannello</li>
+						<li>Ascolto di jingle e registrazioni senza scaricarli, calendario e Talk a un clic</li>
+					</ul>
+				</article>
+				<article class="card">
+					<CardHead icon="key" title="OpenID Connect" label="Un account per tutte le app" />
+					<ul class="checks">
+						<li>RadioPanel fa da provider di accesso, come "Accedi con Google"</li>
+						<li>Stessa password, passkey e verifica in due passaggi del pannello</li>
+						<li>Per ogni app: quali radio la usano e in quale gruppo entra ognuno</li>
+						<li>Funziona con ogni app che supporta OpenID Connect, e si può revocare dal profilo</li>
+					</ul>
+				</article>
 			</div>
+			<p class="table-note">
+				Come si collega, passo per passo: <a href={DOCS.appCollegate}>App collegate e Nextcloud <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+				{' '}· <a href={DOCS.driveCondiviso}>Drive condiviso <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+			</p>
 		</div>
 	</section>
 
@@ -345,7 +370,8 @@ const features = [
 					<p class="price-sub">Calcolato sulle esigenze della tua radio</p>
 					<ul class="checks">
 						<li>Tutte le funzioni del pannello</li>
-						<li>Collegamento con AzuraCast e MB Studio</li>
+						<li>Collegamento con AzuraCast, MB Studio e Nextcloud</li>
+						<li>Accesso alle altre app con OpenID Connect</li>
 						<li>App desktop per Windows e macOS</li>
 						<li>Personalizzazioni su richiesta</li>
 						<li>Aggiornamenti e supporto dedicato</li>

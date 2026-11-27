@@ -1,6 +1,6 @@
 # Sito vetrina di RadioPanel
 
-Landing page pubblica di RadioPanel (radiopanel.app): cos'è il pannello, cosa offre, compatibilità con AzuraCast e MB Studio, licenza e contatti. Sito statico in [Astro](https://astro.build), con gli stessi token grafici del pannello. Sul server del pannello la cartella è bloccata dal `.htaccess`: si pubblica a parte su Cloudflare Pages.
+Landing page pubblica di RadioPanel (radiopanel.app): cos'è il pannello, cosa offre, compatibilità con AzuraCast, MB Studio e Nextcloud (con RadioPanel come provider OpenID Connect), licenza e contatti. Sito statico in [Astro](https://astro.build), con gli stessi token grafici del pannello. Sul server del pannello la cartella è bloccata dal `.htaccess`: si pubblica a parte su Cloudflare Pages.
 
 ## Comandi
 
